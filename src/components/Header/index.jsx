@@ -37,13 +37,13 @@ const Header = () => {
             </Button>
           </NavLink>
           <Box className={classes.loginButton}>
-            <NavLink to="shop-family/sign-in" className={classes.href}>
+            <NavLink to="/shop-family/sign-in" className={classes.href}>
               <Button color="inherit" variant="outlined">
                 Log In
               </Button>
             </NavLink>
           </Box>
-          <NavLink to="shop-family/sign-up" className={classes.href}>
+          <NavLink to="/shop-family/sign-up" className={classes.href}>
             <Button color="inherit" variant="outlined">
               Log Up
             </Button>
