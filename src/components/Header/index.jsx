@@ -31,19 +31,19 @@ const Header = () => {
           <Typography variant="h4" className={classes.title}>
             SHOP FAMILY
           </Typography>
-          <NavLink to="/" className={classes.href}>
+          <NavLink to="/shop-family" className={classes.href}>
             <Button color="secondary" variant="contained">
               Main
             </Button>
           </NavLink>
           <Box className={classes.loginButton}>
-            <NavLink to="/sign-in" className={classes.href}>
+            <NavLink to="shop-family/sign-in" className={classes.href}>
               <Button color="inherit" variant="outlined">
                 Log In
               </Button>
             </NavLink>
           </Box>
-          <NavLink to="/sign-up" className={classes.href}>
+          <NavLink to="shop-family/sign-up" className={classes.href}>
             <Button color="inherit" variant="outlined">
               Log Up
             </Button>
