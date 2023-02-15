@@ -11,7 +11,11 @@ const useStyles = makeStyles((theme) => ({
       flexGrow: 1,
     },
     loginButton: {
-      marginRight: 30
+      margin: '0 30px'
+    },
+    href: {
+      textDecoration: 'none',
+      color: 'white',
     }
   }))
 

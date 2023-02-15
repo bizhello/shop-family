@@ -7,6 +7,9 @@ const useStyles = makeStyles({
       alignItems: 'center',
       marginTop: 80
     },
+    title: {
+      width: 250,
+    },
     info: {
       display: 'flex',
       justifyContent: 'start',

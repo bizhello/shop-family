@@ -10,7 +10,7 @@ import { popupToggleAction } from '../../store/popupReducer'
 import useStyles from './style'
 
 
-const InputWithButton = () => {
+const SelectWithButton = () => {
 
     const dispatch = useDispatch();
 
@@ -36,4 +36,4 @@ const InputWithButton = () => {
     )
 }
  
-export default InputWithButton;
+export default SelectWithButton;

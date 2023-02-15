@@ -1,36 +1,50 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { TextField } from '@material-ui/core';
+
+import { parseDateInText, parseDateInNumber } from '../utils/parseDate';
+import { dateFromAction , dateToAction } from '../../store/modalCardReducer'
 import { changeCardAction } from '../../store/cardReducer'
 import useStyles from './style.js'
 
-const DatePickers = ({label , data}) =>  {
-  const [dataValue, setDataValue] = useState('');
+const DatePickers = ({ label , data }) =>  {
 
   const classes = useStyles();
   const dispatch = useDispatch();
 
+  const dataModal = useSelector(state=> state.modalCard)
+
   const changeDate = (e) => {
     if(label === 'FROM') {
-      data.date_from = e.target.value;
-      dispatch(changeCardAction(data))
+      const newDataFrom = data;
+      newDataFrom.dateFrom = parseDateInNumber(e);
+      dispatch(changeCardAction(newDataFrom))
     } if(label === 'TO') {
-      data.date_to = e.target.value;
-      dispatch(changeCardAction(data))
-    } else {
-      setDataValue(e.target.value)
+      const newDateTo = data;
+      newDateTo.dateTo = parseDateInNumber(e)
+      dispatch(changeCardAction(newDateTo))
+    } if(label === 'NEW_FROM') {
+      const dateNewFrom = parseDateInNumber(e);
+      dispatch(dateFromAction(dateNewFrom))
+    } if(label === 'NEW_TO') {
+      const dateNewTo = parseDateInNumber(e);
+      dispatch(dateToAction(dateNewTo))
     } 
   }
 
   const getValue = () => {
     switch(label) {
       case 'FROM':
-        return data.date_from
+        return parseDateInText(data.dateFrom)
       case 'TO':
-        return data.date_to  
+        return parseDateInText(data.dateTo)
+      case 'NEW_FROM':
+        return dataModal.dateFrom ? parseDateInText(dataModal.dateFrom): '';
+      case 'NEW_TO':
+        return dataModal.dateTo ? parseDateInText(dataModal.dateTo): '';
       default:
-        return dataValue
+        return 0
     }
   }
 
