@@ -1,5 +1,6 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
@@ -10,7 +11,9 @@ import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 
+import AuthService from "../../../services/AuthService";
 import Header from "../../Header";
+import { addUserInfoAction } from "../../../store/userReducer";
 
 import useStyles from "./style";
 
@@ -29,6 +32,48 @@ import useStyles from "./style";
 
 const SignUp = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [formValue, setFormValue] = React.useState({
+    email: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+  });
+
+  const [error, setError] = React.useState({
+    status: null,
+    message: "",
+  });
+
+  React.useEffect(() => {
+    setError({ status: null, message: "" });
+  }, [formValue]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const register = await AuthService.register(formValue);
+      localStorage.setItem("accessToken", register.data.accessToken);
+      localStorage.setItem("userId", register.data.userId);
+      dispatch(
+        addUserInfoAction({
+          userId: register.data.userId,
+          email: register.data.email,
+          firstName: register.data.firstName,
+          lastName: register.data.lastName,
+          loggedIn: true,
+        })
+      );
+      navigate("../shop-family");
+    } catch (e) {
+      setError({
+        status: e.response.status,
+        message: e.response.statusText,
+      });
+    }
+  };
 
   return (
     <>
@@ -53,7 +98,13 @@ const SignUp = () => {
                   fullWidth
                   id="firstName"
                   label="First Name"
+                  // error='true'
+                  // helperText='Минимальная длина 2 символа, максимальная 30 '
                   autoFocus
+                  value={formValue.firstName}
+                  onChange={(e) =>
+                    setFormValue({ ...formValue, firstName: e.target.value })
+                  }
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -65,6 +116,10 @@ const SignUp = () => {
                   label="Last Name"
                   name="lastName"
                   autoComplete="lname"
+                  value={formValue.lastName}
+                  onChange={(e) =>
+                    setFormValue({ ...formValue, lastName: e.target.value })
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -76,6 +131,10 @@ const SignUp = () => {
                   label="Email Address"
                   name="email"
                   autoComplete="email"
+                  value={formValue.email}
+                  onChange={(e) =>
+                    setFormValue({ ...formValue, email: e.target.value })
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -88,27 +147,31 @@ const SignUp = () => {
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  value={formValue.password}
+                  onChange={(e) =>
+                    setFormValue({ ...formValue, password: e.target.value })
+                  }
                 />
               </Grid>
-              {/* <Grid item xs={12}>
-              <FormControlLabel
-                control={<Checkbox value="allowExtraEmails" color="primary" />}
-                label="I want to receive inspiration, marketing promotions and updates via email."
-              />
-            </Grid> */}
             </Grid>
             <Button
-              type="submit"
+              type="click"
               fullWidth
               variant="contained"
               color="primary"
               className={classes.submit}
+              onClick={(e) => handleSubmit(e)}
             >
               Sign Up
             </Button>
-            <Grid container justifyContent="flex-end">
+            <Grid container justifyContent="space-between">
+              {error.status && (
+                <Grid item>
+                  <Typography color="error"> {error.message}</Typography>
+                </Grid>
+              )}
               <Grid item>
-                <NavLink to="/sign-in" className={classes.href}>
+                <NavLink to="/shop-family/sign-in" className={classes.href}>
                   Already have an account? Sign in
                 </NavLink>
               </Grid>

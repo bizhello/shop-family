@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { TextField } from '@material-ui/core';
 
-import { parseDateInText, parseDateInNumber } from '../utils/parseDate';
+import { parseDateInText, parseDateInNumber } from '../../utils/parseDate';
 import { dateFromAction , dateToAction } from '../../store/modalCardReducer'
 import { changeCardAction } from '../../store/cardReducer'
 import useStyles from './style.js'

@@ -1,5 +1,8 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
+import authService from "../../services/AuthService";
 
 import {
   AppBar,
@@ -12,10 +15,25 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 
+import { deleteUserInfoAction } from "../../store/userReducer";
+
 import useStyles from "./style";
 
 const Header = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  const handelLogout = async () => {
+    try {
+      await authService.logout();
+      localStorage.clear('accessToken')
+      localStorage.clear('userId')
+      dispatch(deleteUserInfoAction());
+    } catch (e) {
+      console.log("Ошибка выхода", e);
+    }
+  };
+
   return (
     <AppBar position="static">
       <Container>
@@ -39,15 +57,23 @@ const Header = () => {
           <Box className={classes.loginButton}>
             <NavLink to="/shop-family/sign-in" className={classes.href}>
               <Button color="inherit" variant="outlined">
-                Log In
+                Sign in
               </Button>
             </NavLink>
           </Box>
           <NavLink to="/shop-family/sign-up" className={classes.href}>
             <Button color="inherit" variant="outlined">
-              Log Up
+              Sign up
             </Button>
           </NavLink>
+          <Button
+            className={classes.logoutButton}
+            color="inherit"
+            variant="outlined"
+            onClick={() => handelLogout()}
+          >
+            Logout
+          </Button>
         </Toolbar>
       </Container>
     </AppBar>

@@ -13,6 +13,9 @@ const useStyles = makeStyles((theme) => ({
     loginButton: {
       margin: '0 30px'
     },
+    logoutButton: {
+      marginLeft: '30px'
+    },
     href: {
       textDecoration: 'none',
       color: 'white',
