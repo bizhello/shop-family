@@ -12,10 +12,10 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 
 import AuthService from "../../../services/AuthService";
-import Header from "../../Header";
-import { addUserInfoAction } from "../../../store/userReducer";
+import { getUserFullFilled } from "../../../store/auth/actions";
 
 import useStyles from "./style";
+import HeaderWithoutAuth from "../../Header/HeaderWithoutAuth/index";
 
 // function Copyright() {
 //   return (
@@ -54,18 +54,10 @@ const SignUp = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const register = await AuthService.register(formValue);
-      localStorage.setItem("accessToken", register.data.accessToken);
-      localStorage.setItem("userId", register.data.userId);
-      dispatch(
-        addUserInfoAction({
-          userId: register.data.userId,
-          email: register.data.email,
-          firstName: register.data.firstName,
-          lastName: register.data.lastName,
-          loggedIn: true,
-        })
-      );
+      const { data } = await AuthService.register(formValue);
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("userId", data.userId);
+      dispatch(getUserFullFilled(data));
       navigate("../shop-family");
     } catch (e) {
       setError({
@@ -77,7 +69,7 @@ const SignUp = () => {
 
   return (
     <>
-      <Header />
+      <HeaderWithoutAuth />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>

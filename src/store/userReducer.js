@@ -1,9 +1,9 @@
-const ADD_USER_ID = "ADD_USER_ID";
 const ADD_USER_INFO = "ADD_USER_INFO";
 const DELETE_USER_INFO = "DELETE_USER_INFO";
 const LOGGED_IN = 'LOGGED_IN';
 
 const defaultState = {
+  loading: false,
   userId: null,
   email: "",
   firstName: "",
@@ -15,7 +15,7 @@ const userReducer = (state = defaultState, action) => {
   switch (action.type) {
     case LOGGED_IN:
       return { ...state, loggedIn: true };
-    case ADD_USER_INFO: // передаем всю инфу кроме ID
+    case ADD_USER_INFO:
       return {
         ...state,
         userId: action.payload.userId,
@@ -39,10 +39,6 @@ const userReducer = (state = defaultState, action) => {
   }
 };
 
-export const addUserIdAction = (payload) => ({
-  type: ADD_USER_ID,
-  payload: payload,
-});
 export const addUserInfoAction = (payload) => ({
   type: ADD_USER_INFO,
   payload: payload,

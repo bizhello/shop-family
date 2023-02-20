@@ -14,9 +14,8 @@ import Typography from "@material-ui/core/Typography";
 import Container from "@material-ui/core/Container";
 
 import AuthService from "../../../services/AuthService";
-import UserService from "../../../services/UserService";
-import Header from "../../Header";
-import { addUserInfoAction } from "../../../store/userReducer";
+import HeaderWithoutAuth from "../../Header/HeaderWithoutAuth";
+import { getUserFullFilled } from "../../../store/auth/actions";
 
 import useStyles from "./style";
 
@@ -53,27 +52,13 @@ const SignIn = () => {
     setError({ status: null, message: "" });
   }, [formValue]);
 
-  const toggleCheckBox = (e) => {
-    e.target.checked = !formValue.remember;
-    setFormValue(prevState => {
-      return {...prevState, remember: !prevState.remember}
-  })}
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const login = await AuthService.login(formValue);
-      localStorage.setItem("accessToken", login.data.accessToken);
-      localStorage.setItem("userId", login.data.userId);
-      dispatch(
-        addUserInfoAction({
-          userId: login.data.userId,
-          email: login.data.email,
-          firstName: login.data.firstName,
-          lastName: login.data.lastName,
-          loggedIn: true,
-        })
-      );
+      const { data } = await AuthService.login(formValue);
+      localStorage.setItem("accessToken", data.accessToken);
+      localStorage.setItem("userId", data.userId);
+      dispatch(getUserFullFilled(data));
       navigate("../shop-family");
     } catch (e) {
       setError({
@@ -85,7 +70,7 @@ const SignIn = () => {
 
   return (
     <>
-      <Header />
+      <HeaderWithoutAuth />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <div className={classes.paper}>
@@ -133,7 +118,9 @@ const SignIn = () => {
             <FormControlLabel
               control={<Checkbox value="true" color="primary" />}
               label="Remember me"
-              onChange={(e) => toggleCheckBox(e)}
+              onChange={(e) =>
+                setFormValue({ ...formValue, remember: e.target.checked })
+              }
             />
             <Button
               type="submit"

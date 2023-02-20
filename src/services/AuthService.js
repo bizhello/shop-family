@@ -13,8 +13,7 @@ export default class AuthService {
     return $api.get("/logout");
   }
 
-  static async refreshToken() {
-    // return $api.get("/refresh", { withCredentials: true });\
-    return $api.get("/refresh");
+  static async refreshToken(config) {
+    return $api.get("/refresh", config);
   }
 }

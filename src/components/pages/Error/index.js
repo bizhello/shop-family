@@ -9,7 +9,7 @@ const Error = () => {
         <section className={classes.error}>
             <h2 className={classes.title}>404</h2>
             <p className={classes.text}>Страница не найдена</p>
-            <NavLink className={classes.back} to="../">Назад</NavLink>
+            <NavLink className={classes.back} to="../shop-family">Назад</NavLink>
         </section>
 
     </>

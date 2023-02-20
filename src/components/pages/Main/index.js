@@ -7,7 +7,7 @@ import { TextField } from "@material-ui/core";
 import SelectWithButton from "../../SelectWithButton";
 import MainModal from "../../Modal";
 import BeerCard from "../../BeerCard";
-import Header from '../../Header'
+import HeaderIsAuth from '../../Header/HeaderIsAuth'
 
 const UseStyles = makeStyles((theme) => ({
   mainContent: {
@@ -38,7 +38,7 @@ const Main = () => {
 
   return (
     <>
-      <Header />
+      <HeaderIsAuth />
       <Container className={classes.mainContent}>
         <TextField
           id="main_input"
