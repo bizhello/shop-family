@@ -25,6 +25,7 @@ const authReducer = (state = defaultState, { type, payload }) => {
       return {
         ...state,
         user: payload,
+        loggedIn: true,
         loading: false,
       };
       case AUTH_GET_USER_REJECTED: 

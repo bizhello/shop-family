@@ -17,19 +17,19 @@ $api.interceptors.response.use(
   (response) => {
     return response;
   },
-  async (err) => {
-    const originalConfig = err.config;
-    console.log(err.config);
-    if (err.response.status === 401 && !originalConfig._retry) {
-      originalConfig._retry = true;
+  async (error) => {
+    const originalConfig = error.config;
 
+    if (error.response.status === 401 && !originalConfig._retry) {
+      originalConfig._retry = true;
       const rs = await AuthService.refreshToken(originalConfig);
       localStorage.setItem("accessToken", rs.data.accessToken);
       localStorage.setItem("userId", rs.data.userId);
 
       return $api(originalConfig);
     }
-    return Promise.reject(err);
+    
+    return Promise.reject(error);
   }
 );
 

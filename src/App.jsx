@@ -12,7 +12,7 @@ import useAuth from "./hooks/auth/useAuth";
 
 function App() {
   const loading = useSelector((state) => state.auth.loading);
-  const user = useSelector((state) => state.auth.user);
+  const loggedIn = useSelector((state) => state.auth.loggedIn);
   const getUser = useAuth();
 
   React.useEffect(() => {
@@ -30,7 +30,7 @@ function App() {
           path="/shop-family"
           element={
             <ProtectedRoute
-              isLoggedIn={user}
+              isLoggedIn={loggedIn}
               redirectPath={"/shop-family/sign-in"}
             >
               <Main />

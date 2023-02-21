@@ -7,7 +7,7 @@ import { TextField } from "@material-ui/core";
 import SelectWithButton from "../../SelectWithButton";
 import MainModal from "../../Modal";
 import BeerCard from "../../BeerCard";
-import HeaderIsAuth from '../../Header/HeaderIsAuth'
+import HeaderIsAuth from "../../Header/HeaderIsAuth";
 
 const UseStyles = makeStyles((theme) => ({
   mainContent: {
@@ -42,9 +42,9 @@ const Main = () => {
       <Container className={classes.mainContent}>
         <TextField
           id="main_input"
-          label="Название пива"
+          label="Название"
           className={classes.mainInput}
-          placeholder="Введите название пива для поиска ..."
+          placeholder="Введите название для поиска ..."
           // helperText="Full width!"
           value={searchQuarry}
           onChange={(e) => setSearchQuarry(e.target.value)}
