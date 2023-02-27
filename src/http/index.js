@@ -2,6 +2,9 @@ import axios from "axios";
 import AuthService from "../services/AuthService";
 
 const $api = axios.create({
+  headers: {
+    "Content-Type": "application/json",
+  },
   withCredentials: true,
   baseURL: process.env.API_URL || "http://localhost:4000",
 });
@@ -19,7 +22,6 @@ $api.interceptors.response.use(
   },
   async (error) => {
     const originalConfig = error.config;
-
     if (error.response.status === 401 && !originalConfig._retry) {
       originalConfig._retry = true;
       const rs = await AuthService.refreshToken(originalConfig);
@@ -28,7 +30,7 @@ $api.interceptors.response.use(
 
       return $api(originalConfig);
     }
-    
+
     return Promise.reject(error);
   }
 );

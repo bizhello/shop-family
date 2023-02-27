@@ -3,7 +3,7 @@ import React from 'react';
 import {FormControl, Select, MenuItem, InputLabel } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import useStyles from './style';
-import { filterCreated, filterEnd } from '../../store/cardReducer';
+import { filterCreatedAction, filterEndAction } from '../../store/cardReducer';
 
 const MainSelect = () => {
     const classes = useStyles();
@@ -13,10 +13,10 @@ const MainSelect = () => {
     const [age, setAge] = React.useState('');
     const handleChange = (event) => {
         if(event.target.value === 20) {
-            dispatch(filterCreated());
+            dispatch(filterCreatedAction());
         }
         if(event.target.value === 30) {
-            dispatch(filterEnd());
+            dispatch(filterEndAction());
         }
         setAge(event.target.value)
     }

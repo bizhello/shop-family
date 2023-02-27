@@ -11,15 +11,15 @@ import {
 import { Add, Minimize } from "@material-ui/icons";
 import DeleteIcon from "@material-ui/icons/Delete";
 import Settings from "@material-ui/icons/Settings";
-import {
-  addCountAction,
-  minusCountAction,
-  deleteCardAction,
-} from "../../store/cardReducer";
 import { popupToggleAction } from "../../store/popupReducer";
 import { changeAction } from "../../store/modalCardReducer";
 import MultiPicker from "../MultiPicker";
 import useStyles from "./style";
+import {
+  increment,
+  decrement,
+  deleteCard,
+} from "../../store/asyncActions/cards";
 
 const BeerCard = ({ data }) => {
   const classes = useStyles();
@@ -66,7 +66,7 @@ const BeerCard = ({ data }) => {
           <IconButton
             aria-label="plus"
             size="medium"
-            onClick={() => dispatch(addCountAction(data.id))}
+            onClick={() => dispatch(increment(data.id))}
           >
             <Add />
           </IconButton>
@@ -75,7 +75,7 @@ const BeerCard = ({ data }) => {
           <IconButton
             aria-label="minimize"
             size="medium"
-            onClick={() => dispatch(minusCountAction(data.id))}
+            onClick={() => dispatch(decrement(data.id))}
           >
             <Minimize />
           </IconButton>
@@ -102,7 +102,7 @@ const BeerCard = ({ data }) => {
           <IconButton
             aria-label="delete"
             size="medium"
-            onClick={() => dispatch(deleteCardAction(data.id))}
+            onClick={() => dispatch(deleteCard(data.id))}
           >
             <DeleteIcon />
           </IconButton>

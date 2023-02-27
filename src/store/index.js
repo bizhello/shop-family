@@ -1,4 +1,5 @@
-import { combineReducers, createStore } from 'redux';
+import { combineReducers, createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
 import popupReducer from './popupReducer';
 import cardReducer from './cardReducer'
 import modalCardReducer from './modalCardReducer';
@@ -13,6 +14,6 @@ const rootReducer = combineReducers({
     auth: authReducer
 })
 
-const store = createStore(rootReducer)
+const store = createStore(rootReducer ,applyMiddleware(thunk))
 
 export default store;
