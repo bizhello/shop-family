@@ -4,19 +4,30 @@ import {
   addCountAction,
   minusCountAction,
   deleteCardAction,
+  addCardAction,
 } from "../cardReducer";
 import cardService from "../../services/CardService";
 
 export const fetchCards = () => {
   return (dispatch) => {
-    cardService.getCards().then((data) => dispatch(addManyCardsAction(data.data)));
+    cardService
+      .getCards()
+      .then((data) => dispatch(addManyCardsAction(data.data)));
   };
 };
 
-export const changeCard = (card) => {
+export const createCard = (card) => {
   return (dispatch) => {
     cardService
-      .changeCardById(card)
+      .createCard(card)
+      .then((data) => dispatch(addCardAction(data.data)));
+  };
+};
+
+export const changeCard = (id, data) => {
+  return (dispatch) => {
+    cardService
+      .changeCardById(id, data)
       .then((data) => dispatch(changeCardAction(data.data)));
   };
 };

@@ -5,10 +5,6 @@ export default class CardService {
     return $api.get("/cards");
   }
 
-  // static async getUserById(cardId) {
-  //   return $api.get(`/cards/:${cardId}`);
-  // }
-
   static async deleteCardById(id) {
     return $api.delete(`/cards/${id}`);
   }
@@ -17,15 +13,15 @@ export default class CardService {
     return $api.post("/cards", card);
   }
 
-  static async changeCardById(card) {
-    return $api.put(`/cards/${card.id}`, card);
+  static async changeCardById(id, data) {
+    return $api.put(`/cards/${id}`, data);
   }
 
   static async increment(id) {
-    return $api.patch(`/cards/${id}/increment`);
+    return $api.get(`/cards/${id}/increment`);
   }
 
   static async decrement(id) {
-    return $api.patch(`/cards/${id}/decrement`);
+    return $api.get(`/cards/${id}/decrement`);
   }
 }

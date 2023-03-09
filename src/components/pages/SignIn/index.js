@@ -57,7 +57,7 @@ const SignIn = () => {
     try {
       const { data } = await AuthService.login(formValue);
       localStorage.setItem("accessToken", data.accessToken);
-      localStorage.setItem("userId", data.userId);
+      localStorage.setItem("userId", data.id);
       dispatch(getUserFullFilled(data));
       navigate("../shop-family");
     } catch (e) {

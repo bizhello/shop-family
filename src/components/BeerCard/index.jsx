@@ -34,7 +34,7 @@ const BeerCard = ({ data }) => {
     <Card className={classes.root}>
       <CardMedia
         className={classes.media}
-        image={data.url}
+        // image={data.url}
         title="Contemplative Reptile"
       />
       <Typography

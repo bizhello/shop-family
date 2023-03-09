@@ -4,6 +4,7 @@ import { Button } from "@material-ui/core";
 import Header from "../index";
 import useStyles from "../style";
 import authService from "../../../services/AuthService";
+import { HEADER_LOGOUT } from "../../../common/constants";
 
 const HeaderIsAuth = () => {
   const navigate = useNavigate();
@@ -12,12 +13,12 @@ const HeaderIsAuth = () => {
   const handelLogout = async () => {
     try {
       await authService.logout();
-      navigate("../shop-family/sign-in");
-      localStorage.clear("accessToken");
-      localStorage.clear("userId");
     } catch (e) {
       console.log("Ошибка выхода", e);
     }
+    navigate("../shop-family/sign-in");
+    localStorage.clear("accessToken");
+    localStorage.clear("userId");
   };
 
   return (
@@ -28,7 +29,7 @@ const HeaderIsAuth = () => {
         variant="contained"
         onClick={() => handelLogout()}
       >
-        Logout
+        {HEADER_LOGOUT}
       </Button>
     </Header>
   );

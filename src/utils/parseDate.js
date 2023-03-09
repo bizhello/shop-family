@@ -1,14 +1,12 @@
 
 const parseDateInText = (date)=> {
-
-  const text = new Date(date)
-
-    let month = text.getMonth() + 1;
+    
+    let month = date.getMonth() + 1;
     if (month < 10) {
       month = '0' + month
     }
 
-    return text.getFullYear() + "-" + month;
+    return date.getFullYear() + "-" + month;
 }
 
 const parseDateInNumber = (e) => {

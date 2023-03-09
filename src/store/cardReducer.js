@@ -13,59 +13,29 @@ const defaultState = {
   cards: [],
 };
 
-const cardReducer = (state = defaultState, action) => {
-  switch (action.type) {
+const cardReducer = (state = defaultState, { type, payload }) => {
+  switch (type) {
     case CARD_ACTION.ADD_MANY_CARDS:
-      const newCards = action.payload.map((item) => {
-        const newItem = {
-          id: item._id,
-          url: item.url,
-          title: item.title,
-          dateFrom: item.dateFrom,
-          dateTo: item.dateTo,
-          count: item.count,
-        };
-        return newItem;
-      });
-
-      return { ...state, cards: [...newCards] };
+      return { ...state, cards: [...payload] };
     case CARD_ACTION.ADD_CARD:
-      const card = {
-        id: action.payload._id,
-        url: action.payload.url,
-        title: action.payload.title,
-        dateFrom: action.payload.dateFrom,
-        dateTo: action.payload.dateTo,
-        count: action.payload.count,
-      };
-
-      return { ...state, cards: [...state.cards, card] };
+      return { ...state, cards: [...state.cards, payload] };
     case CARD_ACTION.DELETE_CARD:
       return {
         ...state,
-        cards: [...state.cards.filter((item) => item.id !== action.payload)],
+        cards: [...state.cards.filter((item) => item.id !== payload)],
       };
     case CARD_ACTION.CHANGE_CARD:
       const currentIndex = state.cards.findIndex(
-        (item) => item.id === action.payload._id
+        (item) => item.id === payload.id
       );
-      const copyCards = JSON.parse(JSON.stringify(state.cards));
-      copyCards[currentIndex] = {
-        id: action.payload._id,
-        url: action.payload.url,
-        title: action.payload.title,
-        dateFrom: action.payload.dateFrom,
-        dateTo: action.payload.dateTo,
-        count: action.payload.count,
-      };
+      const copyCards = state.cards.slice(0);
+      copyCards[currentIndex] = payload;
 
       return { ...state, cards: [...copyCards] };
     case CARD_ACTION.ADD_COUNT:
-      const plusIndex = state.cards.findIndex(
-        (item) => item.id === action.payload
-      );
+      const plusIndex = state.cards.findIndex((item) => item.id === payload);
       const plusCardsForChange = state.cards.filter(
-        (item) => item.id === action.payload
+        (item) => item.id === payload
       );
       let plusNum = plusCardsForChange[0].count + 1;
       const plusCards = JSON.parse(JSON.stringify(state.cards));
@@ -73,11 +43,9 @@ const cardReducer = (state = defaultState, action) => {
 
       return { ...state, cards: [...plusCards] };
     case CARD_ACTION.MINUS_COUNT:
-      const minusIndex = state.cards.findIndex(
-        (item) => item.id === action.payload
-      );
+      const minusIndex = state.cards.findIndex((item) => item.id === payload);
       const minusCardsForChange = state.cards.filter(
-        (item) => item.id === action.payload
+        (item) => item.id === payload
       );
       let minusNum = minusCardsForChange[0].count - 1;
       const minusCards = JSON.parse(JSON.stringify(state.cards));
@@ -85,11 +53,19 @@ const cardReducer = (state = defaultState, action) => {
 
       return { ...state, cards: [...minusCards] };
     case CARD_ACTION.FILTER_CREATED:
-      const sortedCreated = state.cards.sort((a, b) => a.dateFrom - b.dateFrom);
+      const sortedCreated = state.cards.sort(
+        (a, b) =>
+          new Date(...a.dateFrom.split("/").reverse()) -
+          new Date(...b.dateFrom.split("/").reverse())
+      );
 
       return { ...state, cards: [...sortedCreated] };
     case CARD_ACTION.FILTER_END:
-      const sortedEnd = state.cards.sort((a, b) => a.dateTo - b.dateTo);
+      const sortedEnd = state.cards.sort(
+        (a, b) =>
+          new Date(...a.dateTo.split("/").reverse()) -
+          new Date(...b.dateTo.split("/").reverse())
+      );
 
       return { ...state, cards: [...sortedEnd] };
     default:

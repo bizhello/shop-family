@@ -55,10 +55,10 @@ const SignUp = () => {
     e.preventDefault();
     try {
       const { data } = await AuthService.register(formValue);
-      localStorage.setItem("accessToken", data.accessToken);
+      // localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("userId", data.userId);
-      dispatch(getUserFullFilled(data));
-      navigate("../shop-family");
+      // dispatch(getUserFullFilled(data));
+      navigate("../shop-family/sign-in");
     } catch (e) {
       setError({
         status: e.response.status,

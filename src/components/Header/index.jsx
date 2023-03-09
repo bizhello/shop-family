@@ -9,6 +9,7 @@ import {
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 
+import { HEADER_TITLE } from "../../common/constants";
 import useStyles from "./style";
 
 const Header = ({ children }) => {
@@ -27,7 +28,7 @@ const Header = ({ children }) => {
             <MenuIcon />
           </IconButton>
           <Typography variant="h4" className={classes.title}>
-            SHOP FAMILY
+            {HEADER_TITLE}
           </Typography>
           {children}
         </Toolbar>

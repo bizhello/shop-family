@@ -1,5 +1,5 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { Container, makeStyles, Typography } from "@material-ui/core";
 import { TextField } from "@material-ui/core";
@@ -8,6 +8,7 @@ import SelectWithButton from "../../SelectWithButton";
 import MainModal from "../../Modal";
 import BeerCard from "../../BeerCard";
 import HeaderIsAuth from "../../Header/HeaderIsAuth";
+import { fetchCards } from "../../../store/asyncActions/cards";
 
 const UseStyles = makeStyles((theme) => ({
   mainContent: {
@@ -23,9 +24,23 @@ const UseStyles = makeStyles((theme) => ({
 
 const Main = () => {
   const classes = UseStyles();
+  const dispatch = useDispatch();
   const popup = useSelector((state) => state.popup);
   const cards = useSelector((state) => state.card.cards);
   const [searchQuarry, setSearchQuarry] = React.useState("");
+
+const getCards = React.useCallback(() => {
+    console.log("render callback");
+    try {
+      dispatch(fetchCards());
+    } catch (error) {
+      console.log("Ошибка загрузки  карточек");
+    }
+  }, [dispatch]);
+
+  React.useEffect(() => {
+    getCards();
+  }, [getCards]);
 
   const sortedCards = React.useMemo(() => {
     if (searchQuarry) {
@@ -33,8 +48,11 @@ const Main = () => {
         item.title.toLowerCase().includes(searchQuarry.toLowerCase())
       );
     }
+
     return cards;
   }, [searchQuarry, cards]);
+
+  console.log("sortedCards", sortedCards);
 
   return (
     <>

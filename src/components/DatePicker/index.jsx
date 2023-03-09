@@ -7,6 +7,7 @@ import { parseDateInText, parseDateInNumber } from "../../utils/parseDate";
 import { dateFromAction, dateToAction } from "../../store/modalCardReducer";
 
 import { changeCard } from "../../store/asyncActions/cards";
+import { DATE_PICKER_LABEL } from "../../common/constants";
 import useStyles from "./style.js";
 
 const DatePickers = ({ label, data }) => {
@@ -16,36 +17,34 @@ const DatePickers = ({ label, data }) => {
   const dataModal = useSelector((state) => state.modalCard);
 
   const changeDate = (e) => {
-    if (label === "FROM") {
-      const newDataFrom = data;
-      newDataFrom.dateFrom = parseDateInNumber(e);
-      dispatch(changeCard(newDataFrom));
-    }
-    if (label === "TO") {
-      const newDateTo = data;
-      newDateTo.dateTo = parseDateInNumber(e);
-      dispatch(changeCard(newDateTo));
-    }
-    if (label === "NEW_FROM") {
-      const dateNewFrom = parseDateInNumber(e);
-      dispatch(dateFromAction(dateNewFrom));
-    }
-    if (label === "NEW_TO") {
-      const dateNewTo = parseDateInNumber(e);
-      dispatch(dateToAction(dateNewTo));
+    switch (label) {
+      case DATE_PICKER_LABEL.from:
+        dispatch(changeCard(data.id, { dateFrom: new Date(e.target.value) }));
+        break;
+      case DATE_PICKER_LABEL.to:
+        dispatch(changeCard(data.id, { dateTo: new Date(e.target.value) }));
+        break;
+      case DATE_PICKER_LABEL.newFrom:
+        dispatch(dateFromAction(new Date(e.target.value)));
+        break;
+      case DATE_PICKER_LABEL.newTo:
+        dispatch(dateToAction(new Date(e.target.value)));
+        break;
+      default:
+        return 0;
     }
   };
 
   const getValue = () => {
     switch (label) {
-      case "FROM":
-        return parseDateInText(data.dateFrom);
-      case "TO":
-        return parseDateInText(data.dateTo);
-      case "NEW_FROM":
-        return dataModal.dateFrom ? parseDateInText(dataModal.dateFrom) : "";
-      case "NEW_TO":
-        return dataModal.dateTo ? parseDateInText(dataModal.dateTo) : "";
+      case DATE_PICKER_LABEL.from:
+        return parseDateInText(new Date(data.dateFrom));
+      case DATE_PICKER_LABEL.to:
+        return parseDateInText(new Date(data.dateTo));
+      case DATE_PICKER_LABEL.newFrom:
+        return dataModal.dateFrom ? parseDateInText(new Date(dataModal.dateFrom)) : "";
+      case DATE_PICKER_LABEL.newTo:
+        return dataModal.dateTo ? parseDateInText(new Date(dataModal.dateTo)) : "";
       default:
         return 0;
     }

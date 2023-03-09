@@ -1,5 +1,9 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+import ReactImagePickerEditor, {
+  ImagePickerConf,
+} from "react-image-picker-editor";
+import "react-image-picker-editor/dist/index.css";
 
 import { Modal, TextField, ButtonGroup, Button } from "@material-ui/core";
 
@@ -17,6 +21,17 @@ import MultiPicker from "../MultiPicker";
 import useStyles from "./style";
 
 const MainModal = () => {
+  const config2 = {
+    borderRadius: "8px",
+    language: "en",
+    width: "330px",
+    height: "210px",
+    objectFit: "contain",
+    compressInitial: null,
+  };
+  // const initialImage: string = '/assets/images/8ptAya.webp';
+  const initialImage = "";
+
   const dispatch = useDispatch();
   const classes = useStyles();
 
@@ -30,8 +45,9 @@ const MainModal = () => {
 
   const handelSave = async () => {
     if (modalCard.id) {
+      const { id, title, dateFrom, dateTo, count } = modalCard;
       try {
-        dispatch(changeCard(modalCard));
+        dispatch(changeCard(id, { title, dateFrom, dateTo, count: +count }));
       } catch (error) {
         console.log("ОШИБКА изменения товара");
       }
@@ -40,13 +56,11 @@ const MainModal = () => {
         title: modalCard.title,
         dateFrom: modalCard.dateFrom,
         dateTo: modalCard.dateTo,
-        count: modalCard.count,
-        url: modalCard.url,
+        count: +modalCard.count,
+        // url: modalCard.url,
       };
-      console.log(card);
       try {
         const newCard = await cardService.createCard(card);
-        console.log(newCard);
         dispatch(addCardAction(newCard.data));
       } catch (e) {
         console.log("Ошибка добавления товара");
@@ -66,22 +80,32 @@ const MainModal = () => {
     >
       <div className={classes.paper}>
         <form className={classes.root} noValidate autoComplete="off">
-          <TextField
+          {/* <TextField
             id="standard-basic"
             label="Ссылка на картинку"
             value={modalCard.url}
             onChange={(e) => dispatch(urlAction(e.target.value))}
-          />
+          /> */}
+          <div>
+            <ReactImagePickerEditor
+              config={config2}
+              imageSrcProp={initialImage}
+              imageChanged={(newDataUri) => {
+                // eslint-disable-next-line no-undef
+                setImageSrc(newDataUri);
+              }}
+            />
+          </div>
           <TextField
             id="standard-basic"
-            label="Название пива"
+            label="Название товара"
             value={modalCard.title}
             onChange={(e) => dispatch(titleAction(e.target.value))}
           />
           <MultiPicker modal={true} />
           <TextField
             id="standard-basic"
-            label="Кол-во бутылок"
+            label="Кол-во товара"
             value={modalCard.count}
             onChange={(e) => dispatch(countAction(e.target.value))}
           />
