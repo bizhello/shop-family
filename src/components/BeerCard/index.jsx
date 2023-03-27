@@ -34,7 +34,8 @@ const BeerCard = ({ data }) => {
     <Card className={classes.root}>
       <CardMedia
         className={classes.media}
-        // image={data.url}
+        image={`${process.env.REACT_APP_API_URL}/static/images/${data.id}/image.webp`}
+        // image="http://localhost:8000/static/images/64199671c3d804b5b764e521/image.jpg"
         title="Contemplative Reptile"
       />
       <Typography

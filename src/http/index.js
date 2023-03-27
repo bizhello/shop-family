@@ -6,7 +6,7 @@ const $api = axios.create({
     "Content-Type": "application/json",
   },
   withCredentials: true,
-  baseURL: process.env.API_URL || "http://localhost:8000",
+  baseURL: process.env.REACT_APP_API_URL,
 });
 
 $api.interceptors.request.use((config) => {
@@ -22,7 +22,7 @@ $api.interceptors.response.use(
   },
   async (error) => {
     const originalConfig = error.config;
-    if (error.response.status === 403 && !originalConfig._retry) {
+    if (error.response.status === 401 && !originalConfig._retry) {
       originalConfig._retry = true;
       const rs = await AuthService.refreshToken(originalConfig);
       localStorage.setItem("accessToken", rs.data.accessToken);

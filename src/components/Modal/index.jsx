@@ -19,6 +19,7 @@ import { addCardAction } from "../../store/cardReducer";
 import { changeCard } from "../../store/asyncActions/cards";
 import MultiPicker from "../MultiPicker";
 import useStyles from "./style";
+import ImageService from "../../services/ImageService";
 
 const MainModal = () => {
   const config2 = {
@@ -29,8 +30,6 @@ const MainModal = () => {
     objectFit: "contain",
     compressInitial: null,
   };
-  // const initialImage: string = '/assets/images/8ptAya.webp';
-  const initialImage = "";
 
   const dispatch = useDispatch();
   const classes = useStyles();
@@ -45,9 +44,10 @@ const MainModal = () => {
 
   const handelSave = async () => {
     if (modalCard.id) {
-      const { id, title, dateFrom, dateTo, count } = modalCard;
+      const { id, url, title, dateFrom, dateTo, count } = modalCard;
       try {
         dispatch(changeCard(id, { title, dateFrom, dateTo, count: +count }));
+        await ImageService.createImageById(id, url);
       } catch (error) {
         console.log("ОШИБКА изменения товара");
       }
@@ -57,10 +57,24 @@ const MainModal = () => {
         dateFrom: modalCard.dateFrom,
         dateTo: modalCard.dateTo,
         count: +modalCard.count,
-        // url: modalCard.url,
       };
       try {
+        // // modalCard.url - это base64
+        // const formData = new FormData();
+        // // const blob = new Blob([modalCard.url], { type: "image/png" });
+        // const fileOfBlob = new File([modalCard.url], "image.png", {
+        //   type: "image/png",
+        // });
+        // formData.append("image", fileOfBlob);
+
+        const formData = new FormData();
+        // const file = new File([modalCard.url], "image.png", {
+        //   type: "image/png",
+        // });
+        formData.append("image", modalCard.url, 'картинка');
+        console.log('asdasdasd')
         const newCard = await cardService.createCard(card);
+        await ImageService.createImageById(newCard.data.id, formData);
         dispatch(addCardAction(newCard.data));
       } catch (e) {
         console.log("Ошибка добавления товара");
@@ -89,10 +103,9 @@ const MainModal = () => {
           <div>
             <ReactImagePickerEditor
               config={config2}
-              imageSrcProp={initialImage}
+              imageSrcProp={modalCard.url}
               imageChanged={(newDataUri) => {
-                // eslint-disable-next-line no-undef
-                setImageSrc(newDataUri);
+                dispatch(urlAction(newDataUri));
               }}
             />
           </div>

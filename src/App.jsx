@@ -9,13 +9,21 @@ import SignIn from "./components/pages/SignIn";
 import ProtectedRoute from "./components/ProtectedRoute";
 import "./App.css";
 import useAuth from "./hooks/auth/useAuth";
+import ImageService from "./services/ImageService";
 
 function App() {
   const loading = useSelector((state) => state.auth.loading);
   const loggedIn = useSelector((state) => state.auth.loggedIn);
   const getUser = useAuth();
 
+  // const getImage = async () => {
+  //   const image = await ImageService.getImageById("641996a90fedd9d423d69e54");
+  //   const newImage = window.URL.createObjectURL(new Blob([image]))
+  //   console.log("image: ", newImage);
+  // };
+
   React.useEffect(() => {
+    // getImage();
     getUser();
   }, [getUser]);
 

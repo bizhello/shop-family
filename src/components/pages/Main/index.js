@@ -29,8 +29,7 @@ const Main = () => {
   const cards = useSelector((state) => state.card.cards);
   const [searchQuarry, setSearchQuarry] = React.useState("");
 
-const getCards = React.useCallback(() => {
-    console.log("render callback");
+  const getCards = React.useCallback(() => {
     try {
       dispatch(fetchCards());
     } catch (error) {
@@ -51,8 +50,6 @@ const getCards = React.useCallback(() => {
 
     return cards;
   }, [searchQuarry, cards]);
-
-  console.log("sortedCards", sortedCards);
 
   return (
     <>

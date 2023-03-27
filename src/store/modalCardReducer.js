@@ -9,7 +9,7 @@ const enums = {
 };
 const defaultState = {
   id: null,
-  //   url: "",
+  url: "",
   title: "",
   dateFrom: null,
   dateTo: null,
@@ -18,8 +18,8 @@ const defaultState = {
 
 const modalCardReducer = (state = defaultState, { type, payload }) => {
   switch (type) {
-    // case enums.CHANGE_URL:
-    //   return { ...state, url: action.payload };
+    case enums.CHANGE_URL:
+      return { ...state, url: payload };
     case enums.CHANGE_TITLE:
       return { ...state, title: payload };
     case enums.CHANGE_DATE_FROM:
@@ -32,7 +32,7 @@ const modalCardReducer = (state = defaultState, { type, payload }) => {
       return {
         ...state,
         id: payload.id,
-        // url: action.payload.url,
+        url: payload.url,
         title: payload.title,
         dateFrom: payload.dateFrom,
         dateTo: payload.dateTo,
